@@ -93,7 +93,8 @@ class Metadata {
 	}
 
 	/**
-	 * Get data from database with given key
+	 * Get data from database with given key.
+	 * 
 	 * @param  string $key
 	 * @return mixed
 	 */
@@ -103,9 +104,10 @@ class Metadata {
 	}
 
 	/**
-	 * Make normalize value with given type
+	 * Make normalize value with given type.
 	 * @param  mixed $value
 	 * @param  integer $type
+	 * 
 	 * @return mixed
 	 */
 	protected function normalizeValue($value, $type)

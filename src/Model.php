@@ -1,5 +1,7 @@
 <?php namespace Hexcores\Metadata;
 
+use Jenssegers\Mongodb\Model as MongoModel;
+
 /**
  * Metadata Model for ecommerce project
  *
@@ -8,7 +10,7 @@
  * @link http://hexcores.com
  **/
 
-class Model extends \Moloquent {
+class Model extends MongoModel {
 
 	const KEY_NAME = "key";
 	const VALUE_NAME = "value";

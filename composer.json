@@ -8,7 +8,6 @@
             "email": "lynnhtut87@gmail.com"
         }
     ],
-    "minimum-stability": "stable",
     "config": {
         "preferred-install": "dist"
     },

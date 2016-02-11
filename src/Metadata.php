@@ -1,4 +1,6 @@
-<?php namespace Hexcores\Metadata;
+<?php 
+
+namespace Hexcores\Metadata;
 
 /**
  * Metadata Helper for project metadata store
@@ -8,7 +10,8 @@
  * @link http://hexcores.com
  **/
 
-class Metadata {
+class Metadata 
+{
 
 	/**
 	 * Loaded metadata cache.
@@ -16,6 +19,33 @@ class Metadata {
 	 * @var array
 	 */
 	protected $cache = [];
+
+	/**
+	 * Create metadata service instance.
+	 *
+	 * @param boolean $preload
+	 */
+	public function __construct($preload = false)
+	{
+		// If preload is true, fetch and prepare all metadata from storage.
+	    if ( $preload) {
+	    	$this->preload();
+	    }
+	}
+
+	/**
+	 * Preload all metadata from storage.
+	 *
+	 * @return void
+	 */
+	public function preload()
+	{
+	    $all = Model::all();
+
+	    foreach ($all as $data) {
+	    	$this->cache[$data[Model::KEY_NAME]] = $data[Model::VALUE_NAME];
+	    }
+	}
 
 	/**
 	 * Get metadata by key. If given key is doesn't exists in store,
@@ -28,8 +58,7 @@ class Metadata {
 	public function get($key, $default = null)
 	{
 		// 1. Result return from cache, if result have in cache
-		if ( isset($this->cache[$key]))
-		{
+		if ( isset($this->cache[$key])) {
 			return $this->cache[$key];
 		}
 
@@ -38,8 +67,7 @@ class Metadata {
 		$result = $this->getFromDatabase($key);
 
 		// 3. If result found in database, set to cache and return data
-		if ( ! is_null($result))
-		{
+		if ( $result !== null) {
 			$this->cache[$key] = $result[Model::VALUE_NAME];
 
 			return $result[Model::VALUE_NAME];
@@ -61,16 +89,14 @@ class Metadata {
 	{
 		$model = $this->getFromDatabase($key);
 
-		if ( is_null($model))
-		{
+		if ( $model === null) {
 			$model = new Model();
 			$model->{Model::KEY_NAME} = $key;
 		}
 
 		$model->{Model::VALUE_NAME} = $this->normalizeValue($value, $type);
 
-		if ( $model->save())
-		{
+		if ( $model->save()) {
 			$this->cache[$key] = $model->{Model::VALUE_NAME};
 
 			return true;
